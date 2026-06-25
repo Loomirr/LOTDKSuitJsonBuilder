@@ -74,18 +74,6 @@ Use `BatmanSuitJsonBuilder.exe` from that folder for a release build.
 
 The `examples/` folder contains small sample suit configs. These are examples only and do not include game assets.
 
-## Safety notes before publishing
-
-Before making a repository public, check that the repo does not contain:
-
-- `bin/`, `obj/`, `.vs/`, or `publish/`
-- `.exe`, `.zip`, or generated release files
-- local Discord config files
-- API keys, tokens, secrets, or private IDs
-- licensed font files
-- extracted game assets
-- personal file paths from your PC
-
 ## License
 
 This cleanup package includes an MIT license file. Replace it if you want to use a different license before publishing.
