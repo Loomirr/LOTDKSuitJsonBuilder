@@ -61,46 +61,6 @@ publish\win-x64-single
 
 Use `BatmanSuitJsonBuilder.exe` from that folder for a release build.
 
-## Optional Discord Rich Presence
-
-Discord Rich Presence is disabled by default in the public source tree.
-
-No Application ID, client secret, token, or private Discord config is committed.
-
-To enable it locally, copy:
-
-```text
-src\BatmanSuitJsonBuilder\Data\DiscordPresence.example.json
-```
-
-to:
-
-```text
-src\BatmanSuitJsonBuilder\Data\DiscordPresence.local.json
-```
-
-Then edit `DiscordPresence.local.json` with your own Discord Application ID and optional Rich Presence image asset key.
-
-`DiscordPresence.local.json` is ignored by Git and should not be committed.
-
-You can also set this environment variable instead of using a local config file:
-
-```text
-BATMAN_SUIT_JSON_BUILDER_DISCORD_APP_ID
-```
-
-## Optional font
-
-The project has a build hook for a local DIN Condensed Bold font, but the font file is not included.
-
-To use it locally, place your licensed copy here:
-
-```text
-src\BatmanSuitJsonBuilder\Assets\Fonts\DIN Condensed Bold.ttf
-```
-
-The file is ignored by Git. Do not commit or redistribute font files unless you have the legal right to do so.
-
 ## Docs
 
 - `docs/QUICK_START.txt` - simple user guide.
