@@ -623,7 +623,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding StatusText}" Style="{StaticResource SmallHint}" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="Json builder UI beta • v0.8.15" Foreground="{StaticResource DimTextBrush}" FontSize="15" FontWeight="Black" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="LOTDK Suit Json Generator V0.9.0" Foreground="{StaticResource DimTextBrush}" FontSize="15" FontWeight="Black" VerticalAlignment="Center"/>
             </Grid>
         </Border>
     </Grid>
