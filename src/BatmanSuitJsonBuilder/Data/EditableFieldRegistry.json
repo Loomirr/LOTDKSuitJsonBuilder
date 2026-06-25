@@ -1,0 +1,304 @@
+{
+  "notes": "v0.8.3 WPF UI beta. Known-field workflow, vector color parameter ops, and Batman playable source-tag presets. Add new components/params/pawns here as we discover more.",
+  "knownComponents": [
+    "CharacterMesh0",
+    "Head",
+    "Face",
+    "Cape",
+    "Torso",
+    "Torso2",
+    "NeckPeg",
+    "Hip"
+  ],
+  "componentClasses": [
+    "MeshComponent",
+    "SkeletalMeshComponentBudgeted",
+    "StaticMeshComponent",
+    "SkeletalMeshComponent"
+  ],
+  "componentClassDefaults": {
+    "CharacterMesh0": "MeshComponent",
+    "Head": "SkeletalMeshComponentBudgeted",
+    "Face": "MeshComponent",
+    "Cape": "SkeletalMeshComponentBudgeted",
+    "Torso": "SkeletalMeshComponentBudgeted",
+    "Torso2": "SkeletalMeshComponentBudgeted",
+    "NeckPeg": "StaticMeshComponent",
+    "Hip": "StaticMeshComponent"
+  },
+  "textureParameters": [
+    "BC",
+    "BC_Pristine",
+    "DNRM",
+    "DNRM_Pristine",
+    "MMR",
+    "ColourMask"
+  ],
+  "operationTypes": [
+    "set_texture_parameter",
+    "set_vector_parameter",
+    "set_scalar_parameter",
+    "set_material",
+    "set_static_mesh",
+    "set_visibility",
+    "set_hidden_in_game",
+    "attach_component",
+    "ensure_component"
+  ],
+  "applyToValues": [
+    "both",
+    "preview",
+    "gameplay"
+  ],
+  "scanKeywords": [
+    "TextureParameterValues",
+    "ScalarParameterValues",
+    "VectorParameterValues",
+    "StaticSwitchParameters",
+    "Material",
+    "Materials",
+    "EquipmentList",
+    "Equipment",
+    "SkeletalMesh",
+    "StaticMesh",
+    "CharacterMesh0",
+    "Head",
+    "Face",
+    "Cape",
+    "Torso",
+    "NeckPeg",
+    "Hip",
+    "Base Color",
+    "BaseColour",
+    "Grime_Colour",
+    "Emissive_Colour"
+  ],
+  "pawnPresets": [
+    {
+      "name": "TheBatman2025",
+      "tag": "Pawns.Playable.Batman.TheBatman2025",
+      "actorClassContains": "BP_Batman_TheBatman2025_Playable_C"
+    },
+    {
+      "name": "1943",
+      "tag": "Pawns.Playable.Batman.1943",
+      "actorClassContains": "BP_Batman_1943_Playable_C"
+    },
+    {
+      "name": "1966",
+      "tag": "Pawns.Playable.Batman.1966",
+      "actorClassContains": "BP_Batman_1966_Playable_C"
+    },
+    {
+      "name": "1989",
+      "tag": "Pawns.Playable.Batman.1989",
+      "actorClassContains": "BP_Batman_1989_Playable_C"
+    },
+    {
+      "name": "Absolute",
+      "tag": "Pawns.Playable.Batman.Absolute",
+      "actorClassContains": "BP_Batman_Absolute_Playable_C"
+    },
+    {
+      "name": "AndRobin",
+      "tag": "Pawns.Playable.Batman.AndRobin",
+      "actorClassContains": "BP_Batman_AndRobin_Playable_C"
+    },
+    {
+      "name": "AnimatedSeries",
+      "tag": "Pawns.Playable.Batman.AnimatedSeries",
+      "actorClassContains": "BP_Batman_AnimatedSeries_Playable_C"
+    },
+    {
+      "name": "ArkhamKnight",
+      "tag": "Pawns.Playable.Batman.ArkhamKnight",
+      "actorClassContains": "BP_Batman_ArkhamKnight_Playable_C"
+    },
+    {
+      "name": "ArmouredSuit",
+      "tag": "Pawns.Playable.Batman.ArmouredSuit",
+      "actorClassContains": "BP_Batman_ArmouredSuit_Playable_C"
+    },
+    {
+      "name": "Asylum",
+      "tag": "Pawns.Playable.Batman.Asylum",
+      "actorClassContains": "BP_Batman_Asylum_Playable_C"
+    },
+    {
+      "name": "Batman",
+      "tag": "Pawns.Playable.Batman.Batman",
+      "actorClassContains": "BP_Batman_Batman_Playable_C"
+    },
+    {
+      "name": "Begins",
+      "tag": "Pawns.Playable.Batman.Begins",
+      "actorClassContains": "BP_Batman_Begins_Playable_C"
+    },
+    {
+      "name": "Beyond",
+      "tag": "Pawns.Playable.Batman.Beyond",
+      "actorClassContains": "BP_Batman_Beyond_Playable_C"
+    },
+    {
+      "name": "BlackLantern",
+      "tag": "Pawns.Playable.Batman.BlackLantern",
+      "actorClassContains": "BP_Batman_BlackLantern_Playable_C"
+    },
+    {
+      "name": "BraveAndTheBold",
+      "tag": "Pawns.Playable.Batman.BraveAndTheBold",
+      "actorClassContains": "BP_Batman_BraveAndTheBold_Playable_C"
+    },
+    {
+      "name": "DarkKnight",
+      "tag": "Pawns.Playable.Batman.DarkKnight",
+      "actorClassContains": "BP_Batman_DarkKnight_Playable_C"
+    },
+    {
+      "name": "DarkKnightReturns",
+      "tag": "Pawns.Playable.Batman.DarkKnightReturns",
+      "actorClassContains": "BP_Batman_DarkKnightReturns_Playable_C"
+    },
+    {
+      "name": "DC27",
+      "tag": "Pawns.Playable.Batman.DC27",
+      "actorClassContains": "BP_Batman_DC27_Playable_C"
+    },
+    {
+      "name": "FinalBoss",
+      "tag": "Pawns.Playable.Batman.FinalBoss",
+      "actorClassContains": "BP_Batman_FinalBoss_Playable_C"
+    },
+    {
+      "name": "GothamByGaslight",
+      "tag": "Pawns.Playable.Batman.GothamByGaslight",
+      "actorClassContains": "BP_Batman_GothamByGaslight_Playable_C"
+    },
+    {
+      "name": "GrayGhost",
+      "tag": "Pawns.Playable.Batman.GrayGhost",
+      "actorClassContains": "BP_Batman_GrayGhost_Playable_C"
+    },
+    {
+      "name": "IceSuit",
+      "tag": "Pawns.Playable.Batman.IceSuit",
+      "actorClassContains": "BP_Batman_IceSuit_Playable_C"
+    },
+    {
+      "name": "JusticeLeague",
+      "tag": "Pawns.Playable.Batman.JusticeLeague",
+      "actorClassContains": "BP_Batman_JusticeLeague_Playable_C"
+    },
+    {
+      "name": "Knightfall",
+      "tag": "Pawns.Playable.Batman.Knightfall",
+      "actorClassContains": "BP_Batman_Knightfall_Playable_C"
+    },
+    {
+      "name": "Knightfight",
+      "tag": "Pawns.Playable.Batman.Knightfight",
+      "actorClassContains": "BP_Batman_Knightfight_Playable_C"
+    },
+    {
+      "name": "Knightmare",
+      "tag": "Pawns.Playable.Batman.Knightmare",
+      "actorClassContains": "BP_Batman_Knightmare_Playable_C"
+    },
+    {
+      "name": "LBM",
+      "tag": "Pawns.Playable.Batman.LBM",
+      "actorClassContains": "BP_Batman_LBM_Playable_C"
+    },
+    {
+      "name": "LEGOBatman08",
+      "tag": "Pawns.Playable.Batman.LEGOBatman08",
+      "actorClassContains": "BP_Batman_LEGOBatman08_Playable_C"
+    },
+    {
+      "name": "MaskOfTengu",
+      "tag": "Pawns.Playable.Batman.MaskOfTengu",
+      "actorClassContains": "BP_Batman_MaskOfTengu_Playable_C"
+    },
+    {
+      "name": "NES",
+      "tag": "Pawns.Playable.Batman.NES",
+      "actorClassContains": "BP_Batman_NES_Playable_C"
+    },
+    {
+      "name": "Ninja",
+      "tag": "Pawns.Playable.Batman.Ninja",
+      "actorClassContains": "BP_Batman_Ninja_Playable_C"
+    },
+    {
+      "name": "One2025",
+      "tag": "Pawns.Playable.Batman.One2025",
+      "actorClassContains": "BP_Batman_One2025_Playable_C"
+    },
+    {
+      "name": "Pirate",
+      "tag": "Pawns.Playable.Batman.Pirate",
+      "actorClassContains": "BP_Batman_Pirate_Playable_C"
+    },
+    {
+      "name": "Rainbow",
+      "tag": "Pawns.Playable.Batman.Rainbow",
+      "actorClassContains": "BP_Batman_Rainbow_Playable_C"
+    },
+    {
+      "name": "SonarSuit",
+      "tag": "Pawns.Playable.Batman.SonarSuit",
+      "actorClassContains": "BP_Batman_SonarSuit_Playable_C"
+    },
+    {
+      "name": "TtOriginal",
+      "tag": "Pawns.Playable.Batman.TtOriginal",
+      "actorClassContains": "BP_Batman_TtOriginal_Playable_C"
+    },
+    {
+      "name": "Vampire",
+      "tag": "Pawns.Playable.Batman.Vampire",
+      "actorClassContains": "BP_Batman_Vampire_Playable_C"
+    },
+    {
+      "name": "ZeroYear",
+      "tag": "Pawns.Playable.Batman.ZeroYear",
+      "actorClassContains": "BP_Batman_ZeroYear_Playable_C"
+    },
+    {
+      "name": "ZurEnArrh",
+      "tag": "Pawns.Playable.Batman.ZurEnArrh",
+      "actorClassContains": "BP_Batman_ZurEnArrh_Playable_C"
+    },
+    {
+      "name": "Keaton",
+      "tag": "Pawns.Playable.Batman.Keaton",
+      "actorClassContains": "BP_Batman_Keaton_Playable_C"
+    },
+    {
+      "name": "Frozen",
+      "tag": "Pawns.Playable.Batman.Frozen",
+      "actorClassContains": "BP_Batman_Frozen_Playable_C"
+    }
+  ],
+  "vectorParameters": [
+    "Base Color",
+    "BaseColour",
+    "Base Colour",
+    "Grime_Colour",
+    "Colour",
+    "Color",
+    "Emissive Colour",
+    "Emissive_Colour"
+  ],
+  "scalarParameters": [
+    "ColourChannel_Picker",
+    "Rain Drizzle Scale",
+    "Rain Droplet Scale",
+    "Micro Detail Intensity",
+    "ScratchTile",
+    "Scratch_Height",
+    "Scratch Mask Amount",
+    "ScratchRoughness Intensity",
+    "RefractionDepthBias"
+  ]
+}

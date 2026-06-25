@@ -1,0 +1,6 @@
+{
+  "enabled": false,
+  "applicationId": "PUT_YOUR_DISCORD_APPLICATION_ID_HERE",
+  "largeImageKey": "optional_rich_presence_asset_key",
+  "largeImageText": "Batman Suit JSON Builder"
+}

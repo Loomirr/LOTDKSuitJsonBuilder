@@ -1,0 +1,181 @@
+Batman Suit JSON Builder
+Quick Guide
+
+This tool helps you make or edit suit.json files for custom LEGO Batman suits.
+
+What you need:
+- A playable Batman JSON export, like BP_Batman_JusticeLeague_Playable.json
+- The asset paths for your textures, materials, icons, or equipment
+- The source suit you want your custom suit to use
+
+You can also open an existing suit.json if you already started one.
+
+
+1. Import files
+
+To make a new suit:
+Click Import Playable JSON and choose your exported playable JSON.
+
+To edit an existing suit:
+Click Import Suit.JSON first, then import the matching playable JSON.
+
+The playable JSON needs to match the source suit used by the suit.json. This lets the tool know which parts and materials belong to that suit.
+
+
+2. Fill out the Setup page
+
+Slot ID:
+The internal name for the suit. Use lowercase letters, numbers, dashes, or underscores.
+Example: batman_space_suit
+
+Display Name:
+The name players see in the suit menu.
+Example: Space Suit
+
+Description:
+The text shown in the suit menu.
+
+Source Pawn Tag:
+The original suit this custom suit is based on.
+
+Source Actor Class Contains:
+The playable actor class for that source suit.
+
+Icon Asset:
+The main menu icon path.
+
+UIMD Icons:
+The menu, right-facing, and left-facing icon paths.
+
+Use full Unreal asset paths, like this:
+
+/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit
+
+
+3. Choose a part
+
+Go to the Build Changes page.
+
+Pick a part from the list, such as:
+- CharacterMesh0
+- Head
+- Cape
+- Torso
+- Face
+- Hip
+
+When you click a part, the tool shows its material slots.
+
+Example:
+
+[0] /Game/Characters/...
+[1] /Game/Characters/...
+
+The slot number is important. If you want to edit material slot 0, your operation should also use slot 0.
+
+
+4. Add changes
+
+After choosing a part, use the buttons to add operations.
+
+Common ones:
+
+Set Texture Parameter:
+Changes textures like BC, DNRM, MMR, or NRM.
+
+Set Vector Parameter:
+Changes colors like Base Color, Base Colour, or EmissiveColour.
+
+Set Scalar Parameter:
+Changes a number value on a material.
+
+Set Material:
+Replaces a material in a specific slot.
+
+Set Static Mesh:
+Replaces a mesh.
+
+Set Hidden In Game:
+Hides a part.
+
+After adding an operation, edit it in the Generated Changes table.
+
+You can right-click the Value box to copy or paste values.
+
+
+5. Colors
+
+Color values use 0 to 1, not 0 to 255.
+
+Example:
+
+r: 0.953
+g: 0.914
+b: 0.863
+a: 1
+
+1 means full strength. 0 means none.
+
+
+6. Equipment
+
+Use the Equipment page if your suit changes equipment.
+
+For example, you can replace Batman's normal batarang with a different equipment asset.
+
+Make sure both paths are correct Unreal asset paths.
+
+
+7. Export
+
+Go to the Export page.
+
+Review the output, then click Export Suit.JSON.
+
+Put the finished suit.json in the correct custom suit folder for the NewSuitSlotNative mod.
+
+
+8. Test in game
+
+After exporting, test the suit in game.
+
+Check that:
+- The suit appears in the menu
+- The name and description are right
+- The icons show up
+- The preview model works
+- The suit applies in gameplay
+- Materials, textures, colors, hidden parts, and equipment work
+
+If something is wrong, open the suit.json again, import the matching playable JSON, fix it, export, and test again.
+
+
+Good screenshots to include
+
+These screenshots would help users a lot:
+
+1. The Setup page when the tool first opens
+2. The Setup page filled out with an example suit
+3. The Build Changes page after importing a playable JSON
+4. A selected part showing Material Slots
+5. The operation buttons next to a selected part
+6. The Generated Changes table with a few operations
+7. The right-click Copy/Paste menu on a Value cell
+8. The Equipment page with an example replacement
+9. The Export page before saving
+10. The suit working in game
+
+
+Quick fixes
+
+Playable JSON rejected:
+Make sure it matches the source suit in the suit.json.
+
+Material change not working:
+Check the component name and material slot number.
+
+Texture or icon not loading:
+Check the asset path spelling.
+
+Color not changing:
+Check the parameter name. It has to match exactly, including spaces.
