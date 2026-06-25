@@ -1,30 +1,119 @@
 {
-  "format_version": 1,
-  "generated_by": "BatmanSuitJsonBuilder v0.1",
-  "source_playable_json": "BP_Batman_1989_Playable.json",
-  "suit": {
-    "id": "electric_suit",
-    "display_name": "Electric Suit",
-    "description": "The Electricity Suit is first worn during Batman and Robin's investigation inside of Arkham Asylum after the breakout. (First appears in Lego Batman 2: DC Super Heroes, 2012)",
-    "copy_from": "Pawns.Playable.Batman.1989",
-    "target_pawn": "Pawns.Playable.Batman.Rainbow"
+  "schema_version": 2,
+  "enabled": true,
+  "menu_order": 100,
+  "slot_id": "batman_example_wingsuit",
+  "display_name": "Example Wingsuit Suit",
+  "description": "Full schema_version 2 example showcasing the supported operation types: body/face material + texture swaps, a hat attachment on the NeckPeg, hiding the head, and a custom glider built on the Cape (skeletal mesh swap + anim blueprint swap + material + texture parameters).",
+  "source_tag": "Pawns.Playable.Batman.TheBatman2025",
+  "source_actor_class_contains": "BP_Batman_TheBatman2025_Playable_C",
+  "icon_asset": "/Game/UI/Icons/Suits/T_UI_IconSuit_Batman_TheBatman2025_BCA.T_UI_IconSuit_Batman_TheBatman2025_BCA",
+  "uimd_icons": {
+    "menu_icon": "/Game/Mods/UI/T_UI_IconChar_Example_Menu_BCA.T_UI_IconChar_Example_Menu_BCA",
+    "right_facing": "/Game/Mods/UI/T_UI_IconChar_Example_Right_BCA.T_UI_IconChar_Example_Right_BCA",
+    "left_facing": "/Game/Mods/UI/T_UI_IconChar_Example_Left_BCA.T_UI_IconChar_Example_Left_BCA"
   },
   "operations": [
     {
-      "op": "replace",
-      "kind": "Texture",
-      "source_path": "$.Properties.CharacterMesh0.Materials[0].TextureParameterValues[0].ParameterValue.ObjectPath",
-      "field_name": "ObjectPath",
-      "current_value": "/Game/Characters/Batman/1989/Textures/T_Batman_1989_Cowl_BC",
-      "replacement_value": "/Game/Mods/NewSuitSlot/Textures/T_Batman_ElectricLMB2_Cowl_BC"
+      "type": "set_material",
+      "component": "CharacterMesh0",
+      "component_class": "MeshComponent",
+      "material_slot": 0,
+      "asset": "/Game/Characters/Minifig/Riddler/Materials/MI_Riddler.MI_Riddler",
+      "apply_to": "both",
+      "required": true,
+      "enabled": true
     },
     {
-      "op": "remove",
-      "kind": "Body Part",
-      "source_path": "$.Properties.Hip.ObjectPath",
-      "field_name": "ObjectPath",
-      "current_value": "/Game/Characters/Batman/Rainbow/Meshes/SK_UtilityBelt",
-      "notes": "Remove utility belt / hip piece."
+      "type": "set_texture_parameter",
+      "component": "CharacterMesh0",
+      "component_class": "MeshComponent",
+      "material_slot": 0,
+      "parameter_name": "BC",
+      "asset": "/Game/Mods/Textures/T_Example_Body_BC.T_Example_Body_BC",
+      "apply_to": "both",
+      "required": false,
+      "enabled": true
+    },
+    {
+      "type": "set_material",
+      "component": "Face",
+      "component_class": "MeshComponent",
+      "material_slot": 0,
+      "asset": "/Game/Characters/Attachments/Face/FACE_Riddler/MI_FACE_Riddler_Default.MI_FACE_Riddler_Default",
+      "apply_to": "both",
+      "required": true,
+      "enabled": true
+    },
+    {
+      "type": "attach_component",
+      "component": "NeckPeg",
+      "component_class": "StaticMeshComponent",
+      "parent": "CharacterMesh0",
+      "socket": "HeadStud_Attach_Socket",
+      "apply_to": "both",
+      "required": true,
+      "enabled": true
+    },
+    {
+      "type": "set_static_mesh",
+      "component": "NeckPeg",
+      "component_class": "StaticMeshComponent",
+      "asset": "/Game/Characters/Attachments/Hat/Bowler/SM_HAT_Bowler.SM_HAT_Bowler",
+      "apply_to": "both",
+      "required": true,
+      "enabled": true
+    },
+    {
+      "type": "set_visibility",
+      "component": "Head",
+      "component_class": "SkeletalMeshComponentBudgeted",
+      "visible": false,
+      "propagate_to_children": false,
+      "apply_to": "preview",
+      "required": true,
+      "enabled": true
+    },
+    {
+      "type": "set_hidden_in_game",
+      "component": "Head",
+      "component_class": "SkeletalMeshComponentBudgeted",
+      "hidden": true,
+      "propagate_to_children": false,
+      "apply_to": "gameplay",
+      "required": true,
+      "enabled": true
+    },
+    {
+      "type": "set_skeletal_mesh",
+      "component": "Cape",
+      "component_class": "SkeletalMeshComponentBudgeted",
+      "asset": "/Game/Models/Gadgets/GA_Wingsuit_NightWing/SK_GA_Wingsuit_NightWing.SK_GA_Wingsuit_NightWing",
+      "apply_to": "both",
+      "required": false,
+      "enabled": true,
+      "reinitialize_pose": true
+    },
+    {
+      "type": "set_anim_class",
+      "component": "Cape",
+      "component_class": "SkeletalMeshComponentBudgeted",
+      "asset": "/Game/Animation/LEGOfig/Nightwing/Traversal/ABP_Wingsuit.ABP_Wingsuit_C",
+      "apply_to": "both",
+      "required": false,
+      "enabled": true
+    },
+    {
+      "type": "set_texture_parameter",
+      "component": "Cape",
+      "component_class": "SkeletalMeshComponentBudgeted",
+      "material_slot": 0,
+      "parameter_name": "BC",
+      "asset": "/Game/Mods/Textures/T_Example_Glider_BC.T_Example_Glider_BC",
+      "apply_to": "both",
+      "required": false,
+      "enabled": true
     }
-  ]
+  ],
+  "equipment_replacements": []
 }

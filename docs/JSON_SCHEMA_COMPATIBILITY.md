@@ -62,10 +62,24 @@ Scalar values export as:
 - `set_scalar_parameter`
 - `set_material`
 - `set_static_mesh`
+- `set_skeletal_mesh`
+- `clear_static_mesh`
+- `clear_skeletal_mesh`
+- `create_skeletal_component`
+- `set_anim_class`
 - `set_visibility`
 - `set_hidden_in_game`
 - `attach_component`
 - `ensure_component`
+
+`set_anim_class` sets a skeletal mesh component's animation blueprint at runtime
+(via `SetAnimInstanceClass`). Its `asset` is the anim blueprint **generated class**
+path, e.g. `/Game/Animation/LEGOfig/Nightwing/Traversal/ABP_Wingsuit.ABP_Wingsuit_C`
+(note the `_C` suffix). Pair it with a `set_skeletal_mesh` on the same component
+to swap both the mesh and its animation (e.g. a custom glider on the `Cape`).
+
+`clear_static_mesh` / `clear_skeletal_mesh` remove the mesh from a component and
+take no `asset`.
 
 ## Equipment replacement fields
 

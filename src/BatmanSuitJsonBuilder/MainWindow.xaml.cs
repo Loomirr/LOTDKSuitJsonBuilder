@@ -551,6 +551,11 @@ public partial class MainWindow : FluentWindow, INotifyPropertyChanged
     private void AddKnownScalar_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_scalar_parameter");
     private void AddKnownMaterial_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_material");
     private void AddKnownMesh_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_static_mesh");
+    private void AddKnownSkeletalMesh_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_skeletal_mesh");
+    private void AddKnownAnimClass_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_anim_class");
+    private void AddKnownClearStaticMesh_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("clear_static_mesh");
+    private void AddKnownClearSkeletalMesh_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("clear_skeletal_mesh");
+    private void AddKnownCreateSkeletal_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("create_skeletal_component");
     private void AddKnownVisibility_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_visibility");
     private void AddKnownHidden_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("set_hidden_in_game");
     private void AddKnownAttach_Click(object sender, RoutedEventArgs e) => AddOperationFromKnownField("attach_component");
@@ -2367,7 +2372,7 @@ public partial class MainWindow : FluentWindow, INotifyPropertyChanged
             : 0.0;
     }
 
-    private static bool OperationNeedsAsset(string type) => type is "set_texture_parameter" or "set_vector_parameter" or "set_scalar_parameter" or "set_material" or "set_static_mesh" or "ensure_component";
+    private static bool OperationNeedsAsset(string type) => type is "set_texture_parameter" or "set_vector_parameter" or "set_scalar_parameter" or "set_material" or "set_static_mesh" or "set_skeletal_mesh" or "create_skeletal_component" or "set_anim_class" or "ensure_component";
 
     private bool FilterOperation(object obj)
     {
@@ -3213,9 +3218,9 @@ public sealed class EditableFieldRegistry
         TextureParameters = ["BC", "BC_Pristine", "DNRM", "DNRM_Pristine", "MMR", "ColourMask"],
         VectorParameters = ["Base Color", "BaseColour", "Base Colour", "Grime_Colour", "Colour", "Color", "Emissive Colour", "Emissive_Colour", "EmissiveColour"],
         ScalarParameters = ["ColourChannel_Picker", "Rain Drizzle Scale", "Rain Droplet Scale", "Micro Detail Intensity", "ScratchTile", "Scratch_Height", "Scratch Mask Amount", "ScratchRoughness Intensity", "RefractionDepthBias"],
-        OperationTypes = ["set_texture_parameter", "set_vector_parameter", "set_scalar_parameter", "set_material", "set_static_mesh", "set_visibility", "set_hidden_in_game", "attach_component", "ensure_component"],
+        OperationTypes = ["set_texture_parameter", "set_vector_parameter", "set_scalar_parameter", "set_material", "set_static_mesh", "set_skeletal_mesh", "clear_static_mesh", "clear_skeletal_mesh", "create_skeletal_component", "set_anim_class", "set_visibility", "set_hidden_in_game", "attach_component", "ensure_component"],
         ApplyToValues = ["both", "preview", "gameplay"],
-        ScanKeywords = ["TextureParameterValues", "VectorParameterValues", "ScalarParameterValues", "Material", "Materials", "Equipment", "SkeletalMesh", "StaticMesh", "CharacterMesh0", "Head", "Face", "Cape", "Torso", "NeckPeg", "Hip"],
+        ScanKeywords = ["TextureParameterValues", "VectorParameterValues", "ScalarParameterValues", "Material", "Materials", "Equipment", "SkeletalMesh", "StaticMesh", "AnimClass", "Glider", "Wingsuit", "CharacterMesh0", "Head", "Face", "Cape", "Torso", "NeckPeg", "Hip"],
         PawnPresets =
         [
             new PawnPreset("TheBatman2025", "Pawns.Playable.Batman.TheBatman2025", "BP_Batman_TheBatman2025_Playable_C"),

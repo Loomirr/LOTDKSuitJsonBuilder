@@ -233,51 +233,53 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="355"/>
+                                        <RowDefinition Height="2*" MinHeight="150"/>
                                         <RowDefinition Height="16"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="3*" MinHeight="160"/>
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Grid.Row="0" Text="2. CREATE OPERATION" Style="{StaticResource PageTitle}" FontSize="21"/>
 
                                     <Border Grid.Row="1" Background="#071827" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,12,0,0" VerticalAlignment="Stretch">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
 
-                                            <TextBlock Grid.Row="0" Text="SELECTED PART" Foreground="{StaticResource AccentBrush}" FontSize="17" FontWeight="Black"/>
-                                            <TextBlock Grid.Row="1" Text="{Binding SelectedKnownField.Component}" FontSize="24" FontWeight="Black" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                            <TextBlock Grid.Row="2" Text="{Binding SelectedKnownField.DetectedKinds}" Foreground="{StaticResource LineBrush2}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,2,0,8"/>
-                                            <TextBlock Grid.Row="3" Text="{Binding SelectedKnownField.Summary}" Style="{StaticResource SmallHint}" TextWrapping="Wrap" MaxHeight="76"/>
+                                                <TextBlock Grid.Row="0" Text="SELECTED PART" Foreground="{StaticResource AccentBrush}" FontSize="17" FontWeight="Black"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding SelectedKnownField.Component}" FontSize="24" FontWeight="Black" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                                <TextBlock Grid.Row="2" Text="{Binding SelectedKnownField.DetectedKinds}" Foreground="{StaticResource LineBrush2}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,2,0,8"/>
+                                                <TextBlock Grid.Row="3" Text="{Binding SelectedKnownField.Summary}" Style="{StaticResource SmallHint}" TextWrapping="Wrap"/>
 
-                                            <Border Grid.Row="4" Background="#04111D" BorderBrush="#244B63" BorderThickness="1" CornerRadius="5" Padding="8" Margin="0,12,0,0" VerticalAlignment="Stretch" MinHeight="130">
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="{x:Null}">
-                                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                                    <TextBlock Text="{Binding SelectedKnownField.MaterialDetails}"
-                                                               Foreground="{StaticResource TextBrush}"
-                                                               FontFamily="Consolas"
-                                                               FontSize="13"
-                                                               TextWrapping="NoWrap"/>
-                                                </ScrollViewer>
-                                            </Border>
-                                        </Grid>
+                                                <Border Grid.Row="4" Background="#04111D" BorderBrush="#244B63" BorderThickness="1" CornerRadius="5" Padding="8" Margin="0,12,0,0" VerticalAlignment="Top">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="{x:Null}">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+                                                        <TextBlock Text="{Binding SelectedKnownField.MaterialDetails}"
+                                                                   Foreground="{StaticResource TextBrush}"
+                                                                   FontFamily="Consolas"
+                                                                   FontSize="13"
+                                                                   TextWrapping="NoWrap"/>
+                                                    </ScrollViewer>
+                                                </Border>
+                                            </Grid>
+                                        </ScrollViewer>
                                     </Border>
 
                                     <Border Grid.Row="3" Background="#04111D" BorderBrush="#244B63" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0" VerticalAlignment="Stretch">
@@ -287,7 +289,12 @@
                                                 <Button Click="AddKnownVector_Click" Style="{StaticResource OperationButton}" Content="VECTOR COLOR  — base/cape color" MinHeight="40"/>
                                                 <Button Click="AddKnownScalar_Click" Style="{StaticResource OperationButton}" Content="SCALAR PARAM  — numeric value" MinHeight="40"/>
                                                 <Button Click="AddKnownMaterial_Click" Style="{StaticResource OperationButton}" Content="MATERIAL  — swap material" MinHeight="40"/>
-                                                <Button Click="AddKnownMesh_Click" Style="{StaticResource OperationButton}" Content="MESH  — replace mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownMesh_Click" Style="{StaticResource OperationButton}" Content="STATIC MESH  — replace static mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownSkeletalMesh_Click" Style="{StaticResource OperationButton}" Content="SKELETAL MESH  — replace skeletal mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownAnimClass_Click" Style="{StaticResource OperationButton}" Content="ANIM CLASS  — set anim blueprint" MinHeight="40"/>
+                                                <Button Click="AddKnownClearStaticMesh_Click" Style="{StaticResource OperationButton}" Content="CLEAR STATIC MESH  — remove static mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownClearSkeletalMesh_Click" Style="{StaticResource OperationButton}" Content="CLEAR SKELETAL MESH  — remove skeletal mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownCreateSkeletal_Click" Style="{StaticResource OperationButton}" Content="CREATE SKELETAL COMPONENT  — add part" MinHeight="40"/>
                                                 <Button Click="AddKnownVisibility_Click" Style="{StaticResource OperationButton}" Content="VISIBILITY  — show/hide" MinHeight="40"/>
                                                 <Button Click="AddKnownHidden_Click" Style="{StaticResource OperationButton}" Content="HIDDEN IN GAME  — runtime hidden" MinHeight="40"/>
                                                 <Button Click="AddKnownAttach_Click" Style="{StaticResource OperationButton}" Content="ATTACH  — parent/socket" MinHeight="40"/>
