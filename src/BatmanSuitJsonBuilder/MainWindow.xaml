@@ -1,0 +1,623 @@
+<ui:FluentWindow x:Class="BatmanSuitJsonBuilder.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 Title="Batman Suit JSON Builder"
+                 Icon="Assets/AppIcon.ico"
+                 Height="1040" Width="1680"
+                 MinHeight="900" MinWidth="1380"
+                 WindowStartupLocation="CenterScreen"
+                 AllowDrop="True"
+                 Drop="Window_Drop"
+                 DragOver="Window_DragOver"
+                 Loaded="MainWindow_Loaded"
+                 Closing="MainWindow_Closing">
+
+    <Grid Background="{StaticResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="64"/>
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Batman Suit JSON Builder"/>
+
+        <Border Grid.Row="1" Margin="22,12,22,12" Background="{StaticResource HeaderGradient}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1.5" CornerRadius="12" Padding="18" ClipToBounds="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Width="72" Height="72" Background="#071321" BorderBrush="{StaticResource AccentBrush}" BorderThickness="2" CornerRadius="10" Margin="0,0,18,0">
+                    <Image Stretch="Uniform" Margin="10">
+                        <Image.Source>
+                            <BitmapImage UriSource="Assets/AppLogo.png" DecodePixelWidth="128" CacheOption="OnLoad"/>
+                        </Image.Source>
+                    </Image>
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="BATMAN SUIT JSON BUILDER" Style="{StaticResource TitleText}"/>
+                    <TextBlock Text="Generate custom suits JSON files for Lego Batman Legacy Of The Dark Knight modding!" Style="{StaticResource SmallHint}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="IMPORT SUIT.JSON..." Style="{StaticResource FlatButton}" Click="OpenSuitJson_Click"/>
+                    <Button Content="IMPORT PLAYABLE JSON..." Style="{StaticResource FlatButton}" Click="OpenPlayableJson_Click"/>
+                    <Button Content="EXPORT SUIT.JSON..." Style="{StaticResource PrimaryButton}" Click="ExportConfig_Click"/>
+                    <Button Content="CLEAR" Style="{StaticResource FlatButton}" Click="Clear_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Margin="22,12,22,0" Style="{StaticResource Panel}" Padding="22">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TabControl x:Name="MainPagesTabControl" Grid.RowSpan="2" SelectedIndex="0" Style="{StaticResource StepTabControl}" SelectionChanged="MainPagesTabControl_SelectionChanged">
+                    <TabItem Style="{StaticResource StepTab}" Margin="1,0,-1,0">
+                        <TabItem.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="01" Style="{StaticResource TabHeaderText}" FontSize="22" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="SETUP" Style="{StaticResource TabHeaderText}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </TabItem.Header>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.05*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="1.08*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="START HERE" Style="{StaticResource PageTitle}"/>
+                                    <Border Style="{StaticResource Card}" Padding="34" Margin="0,0,0,22" MinHeight="190">
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="DROP PLAYABLE JSON OR SUIT.JSON" FontSize="30" FontWeight="Black" Foreground="{StaticResource AccentBrush}" TextAlignment="Center"/>
+                                            <TextBlock Text="Playable exports become a short list of known editable fields. Existing suit.json files import as generated operations." Style="{StaticResource SmallHint}" TextAlignment="Center" Margin="0,12,0,24"/>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="IMPORT SUIT.JSON..." Style="{StaticResource FlatButton}" Click="OpenSuitJson_Click"/>
+                                                <Button Content="IMPORT PLAYABLE JSON..." Style="{StaticResource FlatButton}" Click="OpenPlayableJson_Click"/>
+                                                <Button Content="CLEAR CURRENT SUIT" Style="{StaticResource FlatButton}" Click="Clear_Click"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="18"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="18"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Style="{StaticResource Card}">
+                                            <StackPanel>
+                                                <TextBlock Text="01" FontSize="30" FontWeight="Black" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock Text="Load a playable json" FontSize="20" FontWeight="Black"/>
+                                                <TextBlock Text="Drop a playable JSON from UAssetGUI/FModel." Style="{StaticResource SmallHint}" Margin="0,8,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Column="2" Style="{StaticResource Card}">
+                                            <StackPanel>
+                                                <TextBlock Text="02" FontSize="30" FontWeight="Black" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock Text="Pick a part" FontSize="20" FontWeight="Black"/>
+                                                <TextBlock Text="Known parts like CharacterMesh0, Head, Cape, Face, and Torso show up for now. But as more are found, I will add more." Style="{StaticResource SmallHint}" Margin="0,8,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <Border Grid.Column="4" Style="{StaticResource Card}">
+                                            <StackPanel>
+                                                <TextBlock Text="03" FontSize="30" FontWeight="Black" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock Text="Export" FontSize="20" FontWeight="Black"/>
+                                                <TextBlock Text="Export your changes to a clean suit.json for NewSuitSlotsNative." Style="{StaticResource SmallHint}" Margin="0,8,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="0,0,8,28">
+                                    <TextBlock Text="SUIT IDENTITY" Style="{StaticResource PageTitle}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="18"/>
+                                            <ColumnDefinition Width="130"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource LabelText}" Text="Slot ID"/>
+                                            <TextBox Text="{Binding SlotId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="SlotIdTextBox_PreviewTextInput" DataObject.Pasting="SlotIdTextBox_Pasting"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Style="{StaticResource LabelText}" Text="Menu Order"/>
+                                            <TextBox Text="{Binding MenuOrder, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Display Name"/>
+                                    <TextBox Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="DisplayNameTextBox_PreviewTextInput" DataObject.Pasting="DisplayNameTextBox_Pasting"/>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Description"/>
+                                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" Height="116" VerticalScrollBarVisibility="Auto"/>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Icon Asset"/>
+                                    <TextBox Text="{Binding IconAsset, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <TextBlock Text="UIMD ICONS" Style="{StaticResource PageTitle}" Margin="0,24,0,10"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Menu Icon"/>
+                                    <TextBox Text="{Binding UimdMenuIcon, UpdateSourceTrigger=PropertyChanged}" ToolTip="Exports as uimd_icons.menu_icon"/>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Right Facing"/>
+                                    <TextBox Text="{Binding UimdRightFacing, UpdateSourceTrigger=PropertyChanged}" ToolTip="Exports as uimd_icons.right_facing"/>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Left Facing"/>
+                                    <TextBox Text="{Binding UimdLeftFacing, UpdateSourceTrigger=PropertyChanged}" ToolTip="Exports as uimd_icons.left_facing"/>
+
+                                    <TextBlock Text="TARGETING" Style="{StaticResource PageTitle}" Margin="0,34,0,10"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Source Pawn Tag"/>
+                                    <ComboBox IsEditable="False" ItemsSource="{Binding PawnTagPresets}" SelectedItem="{Binding SourceTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Source Actor Class Contains"/>
+                                    <ComboBox IsEditable="False" ItemsSource="{Binding ActorClassPresets}" SelectedItem="{Binding SourceActorClassContains, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6"/>
+
+                                    <CheckBox Content="Enabled" IsChecked="{Binding SuitEnabled}" Margin="0,16,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Style="{StaticResource StepTab}" Margin="4,0,-4,0">
+                        <TabItem.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="02" Style="{StaticResource TabHeaderText}" FontSize="22" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="BUILD CHANGES" Style="{StaticResource TabHeaderText}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </TabItem.Header>
+
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.25*"/>
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="0.95*"/>
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="1.45*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.ColumnSpan="5" Margin="0,0,0,14">
+                                <TextBlock Text="BUILD CHANGES" Style="{StaticResource PageTitle}" Margin="0,0,0,4"/>
+                                <TextBlock Text="Pick a known part, create one operation, then fill in the replacement value. This keeps the screen focused and avoids the full exported-property dump." Style="{StaticResource SmallHint}"/>
+                            </StackPanel>
+
+                            <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Card}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="1. KNOWN EDITABLE PARTS" Style="{StaticResource PageTitle}" FontSize="21"/>
+                                    <TextBox Grid.Row="1" Text="{Binding KnownFieldFilter, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12" ToolTip="Filter known fields"/>
+                                    <DataGrid Grid.Row="2" ItemsSource="{Binding FilteredKnownFields}"
+                                          SelectedItem="{Binding SelectedKnownField}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="PART" Binding="{Binding Component}" Width="155" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="FOUND" Binding="{Binding DetectedKinds}" Width="150" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="SUMMARY" Binding="{Binding Summary}" Width="3*" IsReadOnly="True"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource Card}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="355"/>
+                                        <RowDefinition Height="16"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Text="2. CREATE OPERATION" Style="{StaticResource PageTitle}" FontSize="21"/>
+
+                                    <Border Grid.Row="1" Background="#071827" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="8" Padding="14" Margin="0,12,0,0" VerticalAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Text="SELECTED PART" Foreground="{StaticResource AccentBrush}" FontSize="17" FontWeight="Black"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding SelectedKnownField.Component}" FontSize="24" FontWeight="Black" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <TextBlock Grid.Row="2" Text="{Binding SelectedKnownField.DetectedKinds}" Foreground="{StaticResource LineBrush2}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,2,0,8"/>
+                                            <TextBlock Grid.Row="3" Text="{Binding SelectedKnownField.Summary}" Style="{StaticResource SmallHint}" TextWrapping="Wrap" MaxHeight="76"/>
+
+                                            <Border Grid.Row="4" Background="#04111D" BorderBrush="#244B63" BorderThickness="1" CornerRadius="5" Padding="8" Margin="0,12,0,0" VerticalAlignment="Stretch" MinHeight="130">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding SelectedKnownField.MaterialDetails}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                                    <TextBlock Text="{Binding SelectedKnownField.MaterialDetails}"
+                                                               Foreground="{StaticResource TextBrush}"
+                                                               FontFamily="Consolas"
+                                                               FontSize="13"
+                                                               TextWrapping="NoWrap"/>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border Grid.Row="3" Background="#04111D" BorderBrush="#244B63" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0" VerticalAlignment="Stretch">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                            <StackPanel>
+                                                <Button Click="AddKnownTexture_Click" Style="{StaticResource OperationButton}" Content="TEXTURE PARAM  — BC / DNRM / MMR" MinHeight="40"/>
+                                                <Button Click="AddKnownVector_Click" Style="{StaticResource OperationButton}" Content="VECTOR COLOR  — base/cape color" MinHeight="40"/>
+                                                <Button Click="AddKnownScalar_Click" Style="{StaticResource OperationButton}" Content="SCALAR PARAM  — numeric value" MinHeight="40"/>
+                                                <Button Click="AddKnownMaterial_Click" Style="{StaticResource OperationButton}" Content="MATERIAL  — swap material" MinHeight="40"/>
+                                                <Button Click="AddKnownMesh_Click" Style="{StaticResource OperationButton}" Content="MESH  — replace mesh" MinHeight="40"/>
+                                                <Button Click="AddKnownVisibility_Click" Style="{StaticResource OperationButton}" Content="VISIBILITY  — show/hide" MinHeight="40"/>
+                                                <Button Click="AddKnownHidden_Click" Style="{StaticResource OperationButton}" Content="HIDDEN IN GAME  — runtime hidden" MinHeight="40"/>
+                                                <Button Click="AddKnownAttach_Click" Style="{StaticResource OperationButton}" Content="ATTACH  — parent/socket" MinHeight="40"/>
+                                                <Button Click="AddKnownEnsure_Click" Style="{StaticResource OperationButton}" Content="ENSURE COMPONENT  — create part" MinHeight="40"/>
+                                                <Button Click="AddKnownEquipment_Click" Style="{StaticResource OperationButton}" Content="EQUIPMENT REPLACEMENT" MinHeight="40"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="4" Style="{StaticResource Card}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="1.2*"/>
+                                        <RowDefinition Height="14"/>
+                                        <RowDefinition Height="1*"/>
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Margin="0,0,0,12">
+                                        <StackPanel DockPanel.Dock="Left">
+                                            <TextBlock Text="3. GENERATED CHANGES" Style="{StaticResource PageTitle}" FontSize="21"/>
+                                            <TextBlock Text="These rows export into operations[]." Style="{StaticResource SmallHint}"/>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                            <Button Content="DUPLICATE" Style="{StaticResource FlatButton}" Click="DuplicateSelectedOperation_Click"/>
+                                            <Button Content="DELETE" Style="{StaticResource FlatButton}" Click="DeleteSelectedOperations_Click"/>
+                                        </StackPanel>
+                                    </DockPanel>
+
+                                    <DataGrid Grid.Row="1" ItemsSource="{Binding FilteredOperations}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          SelectedItem="{Binding SelectedOperation}" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Header="ON" Binding="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}" Width="55"/>
+                                            <DataGridTextColumn Header="TYPE" Binding="{Binding Type, UpdateSourceTrigger=PropertyChanged}" Width="170"/>
+                                            <DataGridTextColumn Header="PART" Binding="{Binding Component, UpdateSourceTrigger=PropertyChanged}" Width="125"/>
+                                            <DataGridTemplateColumn Header="VALUE" Width="2*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Asset}" Padding="4,0,4,0" TextTrimming="CharacterEllipsis">
+                                                            <TextBlock.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Copy Value" Click="CopyOperationValue_Click"/>
+                                                                    <MenuItem Header="Paste Value" Click="PasteOperationValue_Click"/>
+                                                                </ContextMenu>
+                                                            </TextBlock.ContextMenu>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Asset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                            <TextBox.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Copy Value" Click="CopyOperationValue_Click"/>
+                                                                    <MenuItem Header="Paste Value" Click="PasteOperationValue_Click"/>
+                                                                </ContextMenu>
+                                                            </TextBox.ContextMenu>
+                                                        </TextBox>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <Border Grid.Row="3" Background="#071827" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="8" Padding="14">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <StackPanel>
+                                                <TextBlock Text="SELECTED CHANGE DETAILS" Style="{StaticResource PageTitle}" FontSize="20"/>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Type"/>
+                                                        <TextBox Text="{Binding SelectedOperation.Type, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2">
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Apply To"/>
+                                                        <TextBox Text="{Binding SelectedOperation.ApplyTo, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Component"/>
+                                                        <TextBox Text="{Binding SelectedOperation.Component, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2">
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Class"/>
+                                                        <TextBox Text="{Binding SelectedOperation.ComponentClass, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="90"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="150"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Slot"/>
+                                                        <TextBox Text="{Binding SelectedOperation.MaterialSlot, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2">
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Param"/>
+                                                        <ComboBox ItemsSource="{Binding SelectedParameterChoices}" SelectedItem="{Binding SelectedOperation.ParameterName, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="4">
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Asset / Value"/>
+                                                        <TextBox Text="{Binding SelectedOperation.Asset, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="12"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Parent"/>
+                                                        <TextBox Text="{Binding SelectedOperation.Parent, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="2">
+                                                        <TextBlock Style="{StaticResource LabelText}" Text="Socket"/>
+                                                        <TextBox Text="{Binding SelectedOperation.Socket, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <TextBlock Style="{StaticResource LabelText}" Text="Extra Materials CSV"/>
+                                                <TextBox Text="{Binding SelectedOperation.MaterialsCsv, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                                    <CheckBox Content="Required" IsChecked="{Binding SelectedOperation.Required}" Margin="0,0,16,0"/>
+                                                    <CheckBox Content="Propagate" IsChecked="{Binding SelectedOperation.PropagateToChildren}" Margin="0,0,16,0"/>
+                                                    <CheckBox Content="Reinit Pose" IsChecked="{Binding SelectedOperation.ReinitializePose}"/>
+                                                </StackPanel>
+                                                <TextBlock Style="{StaticResource LabelText}" Text="Notes"/>
+                                                <TextBox Text="{Binding SelectedOperation.Notes, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Style="{StaticResource StepTab}" Margin="8,0,-8,0">
+                        <TabItem.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="03" Style="{StaticResource TabHeaderText}" FontSize="22" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="EQUIPMENT" Style="{StaticResource TabHeaderText}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </TabItem.Header>
+
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Style="{StaticResource Card}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Margin="0,0,0,12">
+                                        <StackPanel DockPanel.Dock="Left">
+                                            <TextBlock Text="EQUIPMENT REPLACEMENTS" Style="{StaticResource PageTitle}"/>
+                                            <TextBlock Text="Use this for Batarang, Batclaw, Whip, FoamGun, and similar equipment swaps." Style="{StaticResource SmallHint}"/>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                            <Button Content="+ EQUIPMENT" Style="{StaticResource FlatButton}" Click="AddEquipment_Click"/>
+                                            <Button Content="DELETE" Style="{StaticResource FlatButton}" Click="DeleteSelectedEquipment_Click"/>
+                                        </StackPanel>
+                                    </DockPanel>
+
+                                    <DataGrid Grid.Row="1" ItemsSource="{Binding EquipmentRows}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          SelectedItem="{Binding SelectedEquipment}" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Header="ON" Binding="{Binding Enabled, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                                            <DataGridTextColumn Header="SLOT" Binding="{Binding Slot, UpdateSourceTrigger=PropertyChanged}" Width="90"/>
+                                            <DataGridTextColumn Header="REPLACE EQUIPMENT" Binding="{Binding ReplaceEquipment, UpdateSourceTrigger=PropertyChanged}" Width="2*"/>
+                                            <DataGridTextColumn Header="WITH EQUIPMENT" Binding="{Binding WithEquipment, UpdateSourceTrigger=PropertyChanged}" Width="2*"/>
+                                            <DataGridTextColumn Header="NOTES" Binding="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Width="1.2*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="SELECTED EQUIPMENT" Style="{StaticResource PageTitle}"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Slot"/>
+                                    <TextBox Text="{Binding SelectedEquipment.Slot, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Replace Equipment"/>
+                                    <TextBox Text="{Binding SelectedEquipment.ReplaceEquipment, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="With Equipment"/>
+                                    <TextBox Text="{Binding SelectedEquipment.WithEquipment, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Style="{StaticResource LabelText}" Text="Notes"/>
+                                    <TextBox Text="{Binding SelectedEquipment.Notes, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="90" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Style="{StaticResource StepTab}" Margin="12,0,-12,0">
+                        <TabItem.Header>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="44"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="04" Style="{StaticResource TabHeaderText}" FontSize="22" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="EXPORT" Style="{StaticResource TabHeaderText}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </TabItem.Header>
+
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.1*"/>
+                                <ColumnDefinition Width="22"/>
+                                <ColumnDefinition Width="1.4*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="EXPORT SUIT.JSON" Style="{StaticResource PageTitle}"/>
+                                    <TextBlock Text="This page is intentionally simple: check the suit identity, then export the config into a NewSuitSlotNative Suits folder." Style="{StaticResource SmallHint}" Margin="0,0,0,24"/>
+                                    <Button Content="EXPORT SUIT.JSON..." Style="{StaticResource PrimaryButton}" Click="ExportConfig_Click" Padding="26,16" HorizontalAlignment="Stretch"/>
+                                    <Border Background="#071827" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,18,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="CURRENT SUIT" Foreground="{StaticResource AccentBrush}" FontSize="18" FontWeight="Black"/>
+                                            <TextBlock Text="{Binding DisplayName}" FontSize="28" FontWeight="Black" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                                            <TextBlock Text="{Binding SlotId}" Foreground="{StaticResource LineBrush2}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                                            <TextBlock Text="{Binding SourceTag}" Style="{StaticResource SmallHint}" Margin="0,10,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource Card}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="14"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="EXPORT REVIEW" Style="{StaticResource PageTitle}"/>
+                                        <TextBlock Text="Quickly verify the operation and equipment rows before saving." Style="{StaticResource SmallHint}"/>
+                                    </StackPanel>
+
+                                    <DataGrid Grid.Row="1" ItemsSource="{Binding OperationRows}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          SelectedItem="{Binding SelectedOperation}" Margin="0,12,0,0" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Header="ON" Binding="{Binding Enabled}" Width="55"/>
+                                            <DataGridTextColumn Header="TYPE" Binding="{Binding Type}" Width="180"/>
+                                            <DataGridTextColumn Header="PART" Binding="{Binding Component}" Width="130"/>
+                                            <DataGridTemplateColumn Header="VALUE" Width="2*">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Asset}" Padding="4,0,4,0" TextTrimming="CharacterEllipsis">
+                                                            <TextBlock.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Copy Value" Click="CopyOperationValue_Click"/>
+                                                                    <MenuItem Header="Paste Value" Click="PasteOperationValue_Click"/>
+                                                                </ContextMenu>
+                                                            </TextBlock.ContextMenu>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                                <DataGridTemplateColumn.CellEditingTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding Asset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                            <TextBox.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Copy Value" Click="CopyOperationValue_Click"/>
+                                                                    <MenuItem Header="Paste Value" Click="PasteOperationValue_Click"/>
+                                                                </ContextMenu>
+                                                            </TextBox.ContextMenu>
+                                                        </TextBox>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellEditingTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                    <DataGrid Grid.Row="3" ItemsSource="{Binding EquipmentRows}"
+                                          AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                                          SelectedItem="{Binding SelectedEquipment}" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Header="ON" Binding="{Binding Enabled}" Width="55"/>
+                                            <DataGridTextColumn Header="SLOT" Binding="{Binding Slot}" Width="90"/>
+                                            <DataGridTextColumn Header="REPLACE" Binding="{Binding ReplaceEquipment}" Width="2*"/>
+                                            <DataGridTextColumn Header="WITH" Binding="{Binding WithEquipment}" Width="2*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="3" Margin="22,10,22,14" Background="#061321" BorderBrush="{StaticResource LineBrush}" BorderThickness="1" CornerRadius="9" Padding="14,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding StatusText}" Style="{StaticResource SmallHint}" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="Json builder UI beta • v0.8.15" Foreground="{StaticResource DimTextBrush}" FontSize="15" FontWeight="Black" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ui:FluentWindow>

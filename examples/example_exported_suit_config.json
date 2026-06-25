@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "generated_by": "BatmanSuitJsonBuilder v0.1",
+  "source_playable_json": "BP_Batman_1989_Playable.json",
+  "suit": {
+    "id": "electric_suit",
+    "display_name": "Electric Suit",
+    "description": "The Electricity Suit is first worn during Batman and Robin's investigation inside of Arkham Asylum after the breakout. (First appears in Lego Batman 2: DC Super Heroes, 2012)",
+    "copy_from": "Pawns.Playable.Batman.1989",
+    "target_pawn": "Pawns.Playable.Batman.Rainbow"
+  },
+  "operations": [
+    {
+      "op": "replace",
+      "kind": "Texture",
+      "source_path": "$.Properties.CharacterMesh0.Materials[0].TextureParameterValues[0].ParameterValue.ObjectPath",
+      "field_name": "ObjectPath",
+      "current_value": "/Game/Characters/Batman/1989/Textures/T_Batman_1989_Cowl_BC",
+      "replacement_value": "/Game/Mods/NewSuitSlot/Textures/T_Batman_ElectricLMB2_Cowl_BC"
+    },
+    {
+      "op": "remove",
+      "kind": "Body Part",
+      "source_path": "$.Properties.Hip.ObjectPath",
+      "field_name": "ObjectPath",
+      "current_value": "/Game/Characters/Batman/Rainbow/Meshes/SK_UtilityBelt",
+      "notes": "Remove utility belt / hip piece."
+    }
+  ]
+}

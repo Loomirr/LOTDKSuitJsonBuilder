@@ -1,0 +1,25 @@
+{
+  "schema_version": 2,
+  "enabled": true,
+  "menu_order": 140,
+  "slot_id": "batman_example_texture_suit",
+  "display_name": "Example Texture Suit",
+  "description": "Minimal texture-only suit config example for NewSuitSlotNative.",
+  "source_tag": "Pawns.Playable.Batman.1989",
+  "source_actor_class_contains": "BP_Batman_1989_Playable_C",
+  "icon_asset": "/Game/UI/Icons/Suits/T_UI_IconSuit_Batman_1989_BCA.T_UI_IconSuit_Batman_1989_BCA",
+  "operations": [
+    {
+      "type": "set_texture_parameter",
+      "component": "CharacterMesh0",
+      "component_class": "MeshComponent",
+      "material_slot": 0,
+      "parameter_name": "BC",
+      "asset": "/Game/Mods/Example/T_Batman_Example_BC.T_Batman_Example_BC",
+      "apply_to": "both",
+      "required": false,
+      "enabled": true
+    }
+  ],
+  "equipment_replacements": []
+}
