@@ -73,7 +73,3 @@ Use `BatmanSuitJsonBuilder.exe` from that folder for a release build.
 ## Examples
 
 The `examples/` folder contains small sample suit configs. These are examples only and do not include game assets.
-
-## License
-
-This cleanup package includes an MIT license file. Replace it if you want to use a different license before publishing.
