@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>BatmanSuitJsonBuilder</RootNamespace>
+    <AssemblyName>BatmanSuitJsonBuilder</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\EditableFieldRegistry.json" CopyToOutputDirectory="Never" />
+    <None Include="Data\DiscordPresence.example.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <None Include="Data\DiscordPresence.local.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" Condition="Exists('Data\DiscordPresence.local.json')" />
+    <Resource Include="Assets\AppLogo.png" />
+    <Resource Include="Assets\AppIcon.ico" />
+    <None Include="Assets\Fonts\PUT_DIN_CONDENSED_BOLD_HERE.txt" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <!-- Place your licensed DIN Condensed Bold.ttf here before building. It will be embedded into the EXE as a WPF Resource, not copied as a loose file. -->
+    <Resource Include="Assets\Fonts\DIN Condensed Bold.ttf" Condition="Exists('Assets\Fonts\DIN Condensed Bold.ttf')" />
+  </ItemGroup>
+</Project>

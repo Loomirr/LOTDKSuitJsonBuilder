@@ -1,0 +1,2028 @@
+Batman Suit JSON Builder
+Complete User Guide
+
+This guide explains the whole tool in detail. It is meant for users who already have the NewSuitSlotNative mod set up and want to create or edit custom suit.json files.
+
+This guide is longer than the quick guide on purpose. It explains what each page does, what each field means, how imports work, how material slots work, and what each operation type is used for.
+
+
+============================================================
+1. What this tool does
+============================================================
+
+Batman Suit JSON Builder helps you make suit.json files for custom Batman suits.
+
+The tool does not create Unreal assets by itself. You still need to already have your textures, materials, meshes, icons, or equipment cooked/packed for the game.
+
+The tool helps with the suit.json part:
+
+- Reads exported playable JSON files.
+- Finds known components like CharacterMesh0, Head, Cape, Torso, Face, Hip, etc.
+- Shows material slots for selected components.
+- Creates JSON operations for textures, materials, colors, scalar values, visibility, meshes, and equipment.
+- Imports existing suit.json files so you can keep editing them.
+- Exports a clean suit.json file for NewSuitSlotNative.
+
+
+============================================================
+2. Files you may use with the tool
+============================================================
+
+There are two main file types you can import.
+
+
+------------------------------------------------------------
+Playable JSON
+------------------------------------------------------------
+
+A playable JSON is an exported playable character file.
+
+Example:
+
+BP_Batman_JusticeLeague_Playable.json
+
+This file lets the tool see the source suit's parts and material slots.
+
+You normally get this from UAssetGUI, FModel, or another Unreal asset export workflow.
+
+Use Import Playable JSON when you want to start a new suit or when you need the tool to scan parts for an existing suit.
+
+
+------------------------------------------------------------
+suit.json
+------------------------------------------------------------
+
+A suit.json file is the final config file used by NewSuitSlotNative.
+
+This file contains:
+
+- Slot ID
+- Display name
+- Description
+- Source suit info
+- Icon paths
+- UIMD icon paths
+- Operations
+- Equipment replacements
+
+Use Import Suit.JSON when you already have a suit config and want to keep editing it.
+
+
+------------------------------------------------------------
+Using both together
+------------------------------------------------------------
+
+A good workflow for editing an old suit is:
+
+1. Import Suit.JSON.
+2. Import the matching playable JSON.
+3. Add or edit operations.
+4. Export the updated suit.json.
+
+The playable JSON should match the suit.json source suit.
+
+For example, if the suit.json uses:
+
+source_tag:
+Pawns.Playable.Batman.JusticeLeague
+
+source_actor_class_contains:
+BP_Batman_JusticeLeague_Playable_C
+
+Then the playable JSON should be the Justice League Batman playable export.
+
+
+============================================================
+3. Main tool layout
+============================================================
+
+The tool is split into four main pages:
+
+1. Setup
+2. Build Changes
+3. Equipment
+4. Export
+
+
+------------------------------------------------------------
+Setup page
+------------------------------------------------------------
+
+The Setup page is where you set up the identity of the suit.
+
+This includes the internal slot ID, menu name, description, source suit, and icon paths.
+
+
+------------------------------------------------------------
+Build Changes page
+------------------------------------------------------------
+
+The Build Changes page is where you pick parts and create operations.
+
+This is where most suit editing happens.
+
+You select a component, check its material slots, then add operations such as texture swaps, material swaps, color changes, mesh changes, or visibility changes.
+
+
+------------------------------------------------------------
+Equipment page
+------------------------------------------------------------
+
+The Equipment page is where you add equipment replacement rules.
+
+For example, replacing a normal batarang with an electrorang.
+
+
+------------------------------------------------------------
+Export page
+------------------------------------------------------------
+
+The Export page shows the final JSON output and lets you save the finished suit.json.
+
+
+============================================================
+4. Setup page fields
+============================================================
+
+
+------------------------------------------------------------
+Slot ID
+------------------------------------------------------------
+
+Slot ID is the internal ID for the custom suit.
+
+Example:
+
+batman_space_suit
+
+Use simple lowercase names. Good characters are:
+
+- lowercase letters
+- numbers
+- underscores
+- dashes
+
+Good examples:
+
+batman_space_suit
+electric_suit
+year_one_batman
+gray-and-black
+
+Avoid spaces and symbols.
+
+The Slot ID should be unique. Do not reuse the same Slot ID for two different custom suits.
+
+
+------------------------------------------------------------
+Display Name
+------------------------------------------------------------
+
+Display Name is the name players see in the suit menu.
+
+Example:
+
+Space Suit
+
+This can use normal text and spaces.
+
+
+------------------------------------------------------------
+Description
+------------------------------------------------------------
+
+Description is the text shown for the suit in the menu.
+
+Example:
+
+Batman's Space Suit from LEGO Batman 3: Beyond Gotham.
+
+Keep this readable. The tool exports apostrophes normally, so you should not see escaped text like \u0027 in the final JSON.
+
+
+------------------------------------------------------------
+Source Pawn Tag
+------------------------------------------------------------
+
+Source Pawn Tag tells the mod which original suit this custom suit copies from.
+
+Example:
+
+Pawns.Playable.Batman.JusticeLeague
+
+The source suit matters because the mod uses that base suit's menu slot, unlock data, preview behavior, and playable actor setup.
+
+
+------------------------------------------------------------
+Source Actor Class Contains
+------------------------------------------------------------
+
+Source Actor Class Contains tells the mod which playable actor class should match this suit.
+
+Example:
+
+BP_Batman_JusticeLeague_Playable_C
+
+This should match the playable JSON you imported.
+
+If this does not match, the tool may reject the playable JSON when you are combining it with an existing suit.json.
+
+
+------------------------------------------------------------
+Icon Asset
+------------------------------------------------------------
+
+Icon Asset is the main icon path for the custom suit button.
+
+Example:
+
+/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit
+
+Use full Unreal object paths.
+
+A full path usually looks like:
+
+/Game/Folder/AssetName.AssetName
+
+Not just:
+
+/Game/Folder/AssetName
+
+
+------------------------------------------------------------
+UIMD Icons
+------------------------------------------------------------
+
+The UIMD Icons section has three icon paths:
+
+- Menu Icon
+- Right Facing
+- Left Facing
+
+Example:
+
+menu_icon:
+/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit
+
+right_facing:
+/Game/Mods/SpaceLBM3/SpaceSuit_Left.SpaceSuit_Left
+
+left_facing:
+/Game/Mods/SpaceLBM3/SpaceSuit_Right.SpaceSuit_Right
+
+These export into the suit.json like this:
+
+"uimd_icons": {
+  "menu_icon": "/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit",
+  "right_facing": "/Game/Mods/SpaceLBM3/SpaceSuit_Left.SpaceSuit_Left",
+  "left_facing": "/Game/Mods/SpaceLBM3/SpaceSuit_Right.SpaceSuit_Right"
+}
+
+If you do not have custom UIMD icons, you can leave these blank.
+
+
+============================================================
+5. Unreal asset path rules
+============================================================
+
+Most values in the tool are Unreal asset paths.
+
+A correct path normally includes both the package path and object name:
+
+/Game/Mods/MySuit/T_Batman_BC.T_Batman_BC
+
+The first part is the package:
+
+/Game/Mods/MySuit/T_Batman_BC
+
+The second part is the object name:
+
+.T_Batman_BC
+
+Common asset path examples:
+
+Texture:
+/Game/Mods/MySuit/T_Batman_BC.T_Batman_BC
+
+Material:
+/Game/Characters/Attachments/Hat/Batman_OpenChin/MI_BatmanOpenChin_Titanium_EoM.MI_BatmanOpenChin_Titanium_EoM
+
+Static mesh:
+/Game/Characters/Attachments/Hair/SlickBack/SM_HAIR_SlickBack.SM_HAIR_SlickBack
+
+Equipment:
+/Game/Characters/Equipment/Batarang/DA_ETA_Batarang.DA_ETA_Batarang
+
+If something does not load in game, check the path first. A missing object name after the dot is a common mistake.
+
+
+============================================================
+6. Build Changes page overview
+============================================================
+
+The Build Changes page is where the tool turns a playable JSON into editable suit operations.
+
+The page usually has:
+
+- A list of detected parts/components.
+- A Selected Part panel.
+- A Material Slots box.
+- Operation buttons.
+- A Generated Changes table.
+
+
+------------------------------------------------------------
+Detected parts/components
+------------------------------------------------------------
+
+The left side shows known editable parts found in the playable JSON.
+
+Common parts:
+
+CharacterMesh0
+The main minifigure/body mesh.
+
+Head
+Usually the cowl/hat/head attachment.
+
+Face
+Face component or face material area.
+
+Cape
+Cape component.
+
+Torso
+A torso/cape/glider-related component, depending on the suit.
+
+Torso2
+A second torso or extra torso-related component, depending on the export.
+
+NeckPeg
+Often used for hair or neck attachments.
+
+Hip
+Hip/utility belt/waist attachment.
+
+The exact list depends on the playable JSON.
+
+
+------------------------------------------------------------
+Selected Part panel
+------------------------------------------------------------
+
+When you click a part, the Selected Part panel shows info about that component.
+
+This usually includes:
+
+- Component name
+- Component class
+- Mesh path, if detected
+- Material slots, if detected
+
+
+------------------------------------------------------------
+Material Slots box
+------------------------------------------------------------
+
+The Material Slots box shows each material slot on the selected part.
+
+Example:
+
+[0] /Game/Characters/Attachments/Hat/Batman_OpenChin/MI_HAT_Batman66_EoM.MI_HAT_Batman66_EoM
+[1] /Game/Characters/Materials/MI_Instances/EoM/Controller/MI_BatmanCowlEyes_Hollow.MI_BatmanCowlEyes_Hollow
+
+The number in brackets is the material slot.
+
+If you want to edit slot 0, your operation must use material_slot 0.
+If you want to edit slot 1, your operation must use material_slot 1.
+
+Material slot mistakes are one of the most common reasons an operation changes the wrong thing or appears to do nothing.
+
+
+============================================================
+7. Generated Changes table
+============================================================
+
+When you create operations, they appear in the Generated Changes table.
+
+Common columns include:
+
+Type
+The operation type, such as set_texture_parameter or set_material.
+
+Component
+The component being changed.
+
+Component Class
+The expected component class.
+
+Material Slot
+The material slot number.
+
+Parameter
+The material parameter name, when needed.
+
+Value
+The asset path, color value, number value, or boolean value.
+
+Apply To
+Controls whether the operation applies to preview, gameplay, or both.
+
+Required
+Controls whether the mod should treat the operation as important.
+
+Enabled
+Turns the operation on or off.
+
+
+------------------------------------------------------------
+Copying and pasting values
+------------------------------------------------------------
+
+You can right-click the Value area and use Copy Value or Paste Value.
+
+This is useful when you want to reuse the same texture path, material path, color, or number across multiple operations.
+
+
+------------------------------------------------------------
+Operation order
+------------------------------------------------------------
+
+Operation order matters.
+
+For example, if you want to replace a material and then change that material's Base Color, the material replacement should come first:
+
+1. set_material
+2. set_vector_parameter
+
+If you change the color first and replace the material after, the later material replacement may overwrite the earlier color change.
+
+
+============================================================
+8. Common operation fields
+============================================================
+
+Most operations share some fields.
+
+
+------------------------------------------------------------
+type
+------------------------------------------------------------
+
+The operation type.
+
+Examples:
+
+set_texture_parameter
+set_vector_parameter
+set_scalar_parameter
+set_material
+set_static_mesh
+set_visibility
+set_hidden_in_game
+attach_component
+ensure_component
+
+
+------------------------------------------------------------
+component
+------------------------------------------------------------
+
+The component name to edit.
+
+Examples:
+
+CharacterMesh0
+Head
+Cape
+Torso
+Face
+Hip
+NeckPeg
+
+Use the component name shown by the tool when possible.
+
+
+------------------------------------------------------------
+component_class
+------------------------------------------------------------
+
+The component class tells the mod what kind of component it should look for.
+
+Common values:
+
+MeshComponent
+SkeletalMeshComponentBudgeted
+SkeletalMeshComponent
+StaticMeshComponent
+SceneComponent
+
+Common choices:
+
+CharacterMesh0 usually uses MeshComponent.
+Head, Cape, and Torso often use SkeletalMeshComponentBudgeted.
+Hip or NeckPeg may use StaticMeshComponent, depending on the suit.
+
+
+------------------------------------------------------------
+material_slot
+------------------------------------------------------------
+
+The material slot number.
+
+Used by material and material-parameter operations.
+
+Example:
+
+0
+1
+2
+
+If the Selected Part panel shows [0], use material_slot 0.
+If it shows [1], use material_slot 1.
+
+
+------------------------------------------------------------
+apply_to
+------------------------------------------------------------
+
+Controls where the operation applies.
+
+Options:
+
+both
+Applies to both the menu preview and gameplay.
+
+preview
+Applies only to the suit menu preview.
+
+gameplay
+Applies only after the suit is used in gameplay.
+
+Most cosmetic operations should use both.
+
+Use preview only when you need something to look different in the menu.
+Use gameplay only when the operation should not affect the menu preview.
+
+
+------------------------------------------------------------
+required
+------------------------------------------------------------
+
+Controls whether the operation is required.
+
+true:
+If the component or asset is missing, the mod may stop the cosmetic batch to avoid applying only part of a suit.
+
+false:
+If it fails, the mod can continue applying the rest of the suit.
+
+Use true for important body textures or main suit materials.
+Use false for optional extras, small accessories, or test operations.
+
+
+------------------------------------------------------------
+enabled
+------------------------------------------------------------
+
+Controls whether the operation runs.
+
+true:
+The operation is active.
+
+false:
+The operation stays in the JSON but does not run.
+
+This is useful for testing.
+
+
+============================================================
+9. Set Texture Parameter
+============================================================
+
+Set Texture Parameter changes a texture parameter on a material.
+
+Use it when you want to replace a material's texture without replacing the whole material.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Texture Parameter for things like:
+
+- Base color textures
+- Normal maps
+- MMR maps
+- Roughness/AO maps
+- Color mask textures
+- Cowl textures
+- Body textures
+
+
+------------------------------------------------------------
+Common texture parameter names
+------------------------------------------------------------
+
+Common names include:
+
+BC
+Base color texture.
+
+BC_Pristine
+Clean/base color texture variant.
+
+DNRM
+Normal map texture.
+
+DNRM_Pristine
+Clean normal map texture variant.
+
+NRM
+Normal map texture on some materials.
+
+MMR
+Mask/metallic/roughness style texture.
+
+RAO
+Roughness/AO type texture on some materials.
+
+CT
+Color tint or color table texture on some materials.
+
+ColourMask
+Color mask texture.
+
+The exact parameter name must match the material.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_texture_parameter
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+material_slot:
+The material slot to edit.
+
+parameter_name:
+The texture parameter name.
+
+asset:
+The texture asset path.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_texture_parameter",
+  "component": "CharacterMesh0",
+  "component_class": "MeshComponent",
+  "material_slot": 0,
+  "parameter_name": "BC",
+  "asset": "/Game/Mods/SpaceLBM3/T_Batman_SpaceLBM3_BC.T_Batman_SpaceLBM3_BC",
+  "apply_to": "both",
+  "required": true,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+If one texture changes but another does not, check the parameter name.
+
+For example, one material may use DNRM while another uses NRM.
+
+If the body texture changes in preview but not gameplay, check apply_to.
+
+If the wrong part changes, check component and material_slot.
+
+
+============================================================
+10. Set Vector Parameter
+============================================================
+
+Set Vector Parameter changes a color/vector parameter on a material.
+
+Use it for colors such as Base Color, Base Colour, EmissiveColour, grime color, tint colors, or similar material parameters.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Vector Parameter when the material already has a color parameter and you want to change it without making a new texture.
+
+Examples:
+
+- Make a cowl lighter or darker.
+- Change cape color.
+- Change eye glow color.
+- Change emissive color.
+- Tint an attachment material.
+
+
+------------------------------------------------------------
+Common vector parameter names
+------------------------------------------------------------
+
+Base Color
+Used by some materials.
+
+Base Colour
+Used by other materials.
+
+EmissiveColour
+Used for glow/emissive colors.
+
+Grime_Colour
+Used by some materials for grime/tint color.
+
+The exact spelling matters. Base Color and Base Colour are not the same name.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_vector_parameter
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+material_slot:
+The material slot to edit.
+
+parameter_name:
+The vector/color parameter name.
+
+value:
+The RGBA color values.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Color value format
+------------------------------------------------------------
+
+The tool exports color values like this:
+
+"value": {
+  "r": 0.953,
+  "g": 0.914,
+  "b": 0.863,
+  "a": 1
+}
+
+Use values from 0 to 1, not 0 to 255.
+
+Examples:
+
+White:
+r 1
+g 1
+b 1
+a 1
+
+Black:
+r 0
+g 0
+b 0
+a 1
+
+Red:
+r 1
+g 0
+b 0
+a 1
+
+Dark gray:
+r 0.1
+g 0.1
+b 0.1
+a 1
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_vector_parameter",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "material_slot": 0,
+  "parameter_name": "Base Color",
+  "value": {
+    "r": 0.953,
+    "g": 0.914,
+    "b": 0.863,
+    "a": 1
+  },
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+If the color does not change, check the parameter name first.
+
+If you are changing a material after replacing it, use this order:
+
+1. set_material
+2. set_vector_parameter
+
+The color operation should target the same component and material slot as the material you replaced.
+
+
+============================================================
+11. Set Scalar Parameter
+============================================================
+
+Set Scalar Parameter changes a number parameter on a material.
+
+Use it for material settings that are numbers instead of textures or colors.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Scalar Parameter for values like:
+
+- Noise scale
+- Scratch amount
+- Roughness intensity
+- Color picker index
+- Rain scale
+- Micro detail intensity
+- Any material parameter with a single numeric value
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_scalar_parameter
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+material_slot:
+The material slot to edit.
+
+parameter_name:
+The scalar parameter name.
+
+value:
+The number value.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_scalar_parameter",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "material_slot": 0,
+  "parameter_name": "ColourChannel_Picker",
+  "value": 2.0,
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+Scalar parameter names must match the material exactly.
+
+Do not use quotes around the value if editing raw JSON. It should be a number:
+
+"value": 2.0
+
+Not:
+
+"value": "2.0"
+
+
+============================================================
+12. Set Material
+============================================================
+
+Set Material replaces a material in a specific material slot.
+
+This is different from changing a parameter. It swaps the whole material.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Material when:
+
+- You want to use a completely different material.
+- The source material does not have the parameters you need.
+- You want to copy the look of another suit material.
+- You need a special material setup like metallic, glass, emissive, or a different attachment material.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_material
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+material_slot:
+The slot to replace.
+
+asset:
+The material asset path.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_material",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "material_slot": 0,
+  "asset": "/Game/Characters/Attachments/Hat/Batman_OpenChin/MI_BatmanOpenChin_Titanium_EoM.MI_BatmanOpenChin_Titanium_EoM",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Using Set Material with colors
+------------------------------------------------------------
+
+A common setup is:
+
+1. Replace the material.
+2. Change the new material's color.
+
+Example operation order:
+
+set_material Head slot 0
+set_vector_parameter Head slot 0 Base Color
+
+The vector parameter must match the new material, not the old one.
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+Check the material slot first.
+
+Some components have multiple materials. Replacing slot 0 may not affect slot 1.
+
+If the new material does not show, check the path and make sure it is a material instance path, not a texture path.
+
+
+============================================================
+13. Set Static Mesh
+============================================================
+
+Set Static Mesh replaces the static mesh used by a static mesh component.
+
+This is usually used for accessories or small mesh-based parts.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Static Mesh when:
+
+- A component is a StaticMeshComponent.
+- You want to replace an accessory mesh.
+- You want to swap something like a belt, hair mesh, or extra attachment mesh if that part uses a static mesh.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_static_mesh
+
+component:
+The component to edit.
+
+component_class:
+Usually StaticMeshComponent.
+
+asset:
+The static mesh asset path.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_static_mesh",
+  "component": "NeckPeg",
+  "component_class": "StaticMeshComponent",
+  "asset": "/Game/Characters/Attachments/Hair/SlickBack/SM_HAIR_SlickBack.SM_HAIR_SlickBack",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+Use this only for static mesh components.
+
+If the part uses a skeletal mesh, Set Static Mesh is probably the wrong operation.
+
+
+============================================================
+14. Set Visibility
+============================================================
+
+Set Visibility changes whether a component is visible.
+
+This uses the component's visibility state.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Visibility when:
+
+- You want to hide a component in the preview.
+- You want to show/hide a visible mesh component.
+- You are testing whether a component is the one you think it is.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_visibility
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+visible:
+true or false.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example: hide a head only in preview
+------------------------------------------------------------
+
+{
+  "type": "set_visibility",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "visible": false,
+  "apply_to": "preview",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+Set Visibility and Set Hidden In Game are similar but not exactly the same.
+
+If one does not work for a component, try the other.
+
+For gameplay hiding, Set Hidden In Game is often the better choice.
+
+
+============================================================
+15. Set Hidden In Game
+============================================================
+
+Set Hidden In Game changes the bHiddenInGame setting on a component.
+
+This is commonly used to hide parts during gameplay.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Set Hidden In Game when:
+
+- You want to hide a component during gameplay.
+- You want to hide a face, cowl, cape, belt, or accessory.
+- You want the preview to keep showing something but gameplay to hide it.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+set_hidden_in_game
+
+component:
+The component to edit.
+
+component_class:
+The component class.
+
+hidden:
+true or false.
+
+propagate_to_children:
+true or false.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "set_hidden_in_game",
+  "component": "Face",
+  "component_class": "MeshComponent",
+  "hidden": true,
+  "propagate_to_children": false,
+  "apply_to": "gameplay",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+hidden true means the part is hidden.
+hidden false means the part is not hidden.
+
+propagate_to_children controls whether child components should also be affected.
+
+Usually keep propagate_to_children false unless you know the component has children you want to hide too.
+
+
+============================================================
+16. Attach Component
+============================================================
+
+Attach Component attaches one component to another component.
+
+This is more advanced than material or texture operations.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Attach Component when:
+
+- A mesh or accessory needs to be attached to a specific parent component.
+- A component exists but is attached to the wrong place.
+- You need to snap an attachment to a parent/socket.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+attach_component
+
+component:
+The component being attached.
+
+component_class:
+The class of the component being attached.
+
+parent:
+The parent component to attach to.
+
+socket:
+The socket name to attach to, if needed.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "attach_component",
+  "component": "NeckPeg",
+  "component_class": "StaticMeshComponent",
+  "parent": "CharacterMesh0",
+  "socket": "head",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+This is advanced and may need testing.
+
+The parent component must exist.
+The socket name must be valid for that parent.
+If the attachment fails, check the component name, parent name, and socket name.
+
+
+============================================================
+17. Ensure Component
+============================================================
+
+Ensure Component is an advanced operation used when a component may need to exist before other changes can apply.
+
+Depending on the runtime path, it can be used to create or make sure a component is present before applying mesh/material operations.
+
+
+------------------------------------------------------------
+When to use it
+------------------------------------------------------------
+
+Use Ensure Component only if you know the suit needs a component that is missing or not always present.
+
+For normal texture, material, and color swaps, you usually do not need this.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+type:
+ensure_component
+
+component:
+The component to ensure.
+
+component_class:
+The expected component class.
+
+parent:
+Optional parent component.
+
+socket:
+Optional socket name.
+
+asset:
+Optional mesh asset.
+
+material:
+Optional material asset.
+
+materials:
+Optional list of materials.
+
+apply_to:
+both, preview, or gameplay.
+
+required:
+true or false.
+
+enabled:
+true or false.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "type": "ensure_component",
+  "component": "CustomAccessory",
+  "component_class": "StaticMeshComponent",
+  "parent": "CharacterMesh0",
+  "socket": "spine_03",
+  "asset": "/Game/Mods/MySuit/SM_CustomAccessory.SM_CustomAccessory",
+  "material": "/Game/Mods/MySuit/MI_CustomAccessory.MI_CustomAccessory",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+This operation is for advanced users.
+
+If the component already exists, use simpler operations like Set Static Mesh or Set Material first.
+
+Use Required false while testing.
+
+
+============================================================
+18. Equipment replacements
+============================================================
+
+Equipment replacements are handled on the Equipment page.
+
+They are separate from normal cosmetic operations.
+
+
+------------------------------------------------------------
+What equipment replacements do
+------------------------------------------------------------
+
+They replace one equipment asset with another equipment asset.
+
+Example:
+
+Replace Batman's normal batarang with an electrorang.
+
+
+------------------------------------------------------------
+Fields
+------------------------------------------------------------
+
+slot:
+The equipment slot.
+
+replace_equipment:
+The original equipment asset to replace.
+
+with_equipment:
+The new equipment asset to use.
+
+enabled:
+Whether the rule is active.
+
+required:
+Whether the replacement should be considered required.
+
+
+------------------------------------------------------------
+Slot values
+------------------------------------------------------------
+
+The common slot values are numbers like:
+
+0
+1
+
+The runtime can also understand text values like:
+
+current
+active
+selected
+
+For most users, use a number if you know the slot.
+
+
+------------------------------------------------------------
+Example
+------------------------------------------------------------
+
+{
+  "slot": 0,
+  "replace_equipment": "/Game/Characters/Equipment/Batarang/DA_ETA_Batarang.DA_ETA_Batarang",
+  "with_equipment": "/Game/Characters/Equipment/Electrorang/DA_ETA_Electrorang.DA_ETA_Electrorang"
+}
+
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+
+Equipment can be harder to test than material changes.
+
+Test one replacement at a time.
+
+If the suit works but equipment does not, check:
+
+- Slot number
+- Original equipment path
+- Replacement equipment path
+- Whether the source suit actually uses that equipment
+
+
+============================================================
+19. Importing an existing suit.json
+============================================================
+
+The tool can import an existing suit.json.
+
+This is useful when:
+
+- You already made a suit and want to add more.
+- You want to fix a few paths.
+- You want to add UIMD icons.
+- You want to add equipment replacements.
+- You want to add operations from a newly exported playable JSON.
+
+
+------------------------------------------------------------
+Recommended existing suit workflow
+------------------------------------------------------------
+
+1. Click Import Suit.JSON.
+2. Choose your existing suit.json.
+3. Click Import Playable JSON.
+4. Choose the matching playable JSON.
+5. Go to Build Changes.
+6. Add more operations.
+7. Go to Export.
+8. Export the updated suit.json.
+
+
+------------------------------------------------------------
+Why the matching playable JSON matters
+------------------------------------------------------------
+
+The suit.json has source suit info.
+
+The playable JSON gives the tool actual part/material data.
+
+If they do not match, the tool may show the wrong parts or reject the import.
+
+
+============================================================
+20. Export page
+============================================================
+
+The Export page shows the final suit config.
+
+Use it to review before saving.
+
+Check:
+
+- Slot ID
+- Display Name
+- Description
+- Source Pawn Tag
+- Source Actor Class Contains
+- Icon Asset
+- UIMD Icons
+- Operation list
+- Equipment replacements
+
+When ready, click Export Suit.JSON.
+
+
+------------------------------------------------------------
+Where to put the exported suit.json
+------------------------------------------------------------
+
+The exact folder depends on your mod setup, but usually each custom suit has its own folder under the NewSuitSlotNative Suits folder.
+
+Example structure:
+
+NewSuitSlotNative
+  Suits
+    BatmanSpaceSuit
+      suit.json
+
+Keep custom suit assets packed separately as required by your mod setup.
+
+
+============================================================
+21. Full example suit.json structure
+============================================================
+
+This is a simplified example.
+
+{
+  "schema_version": 2,
+  "enabled": true,
+  "menu_order": 100,
+  "slot_id": "batman_space_suit",
+  "display_name": "Space Suit",
+  "description": "Batman's Space Suit from LEGO Batman 3.",
+  "source_tag": "Pawns.Playable.Batman.JusticeLeague",
+  "source_actor_class_contains": "BP_Batman_JusticeLeague_Playable_C",
+  "icon_asset": "/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit",
+  "uimd_icons": {
+    "menu_icon": "/Game/Mods/SpaceLBM3/SpaceSuit.SpaceSuit",
+    "right_facing": "/Game/Mods/SpaceLBM3/SpaceSuit_Left.SpaceSuit_Left",
+    "left_facing": "/Game/Mods/SpaceLBM3/SpaceSuit_Right.SpaceSuit_Right"
+  },
+  "operations": [
+    {
+      "type": "set_texture_parameter",
+      "component": "CharacterMesh0",
+      "component_class": "MeshComponent",
+      "material_slot": 0,
+      "parameter_name": "BC",
+      "asset": "/Game/Mods/SpaceLBM3/T_Batman_SpaceLBM3_BC.T_Batman_SpaceLBM3_BC",
+      "apply_to": "both",
+      "required": true,
+      "enabled": true
+    }
+  ],
+  "equipment_replacements": []
+}
+
+
+============================================================
+22. Good operation examples
+============================================================
+
+
+------------------------------------------------------------
+Body texture swap
+------------------------------------------------------------
+
+Use this when changing the body base color texture.
+
+{
+  "type": "set_texture_parameter",
+  "component": "CharacterMesh0",
+  "component_class": "MeshComponent",
+  "material_slot": 0,
+  "parameter_name": "BC",
+  "asset": "/Game/Mods/MySuit/T_Batman_Body_BC.T_Batman_Body_BC",
+  "apply_to": "both",
+  "required": true,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Body normal map swap
+------------------------------------------------------------
+
+{
+  "type": "set_texture_parameter",
+  "component": "CharacterMesh0",
+  "component_class": "MeshComponent",
+  "material_slot": 0,
+  "parameter_name": "DNRM",
+  "asset": "/Game/Mods/MySuit/T_Batman_Body_NRM.T_Batman_Body_NRM",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Cowl material swap
+------------------------------------------------------------
+
+{
+  "type": "set_material",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "material_slot": 0,
+  "asset": "/Game/Characters/Attachments/Hat/Batman_OpenChin/MI_BatmanOpenChin_Titanium_EoM.MI_BatmanOpenChin_Titanium_EoM",
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Change cowl base color after material swap
+------------------------------------------------------------
+
+{
+  "type": "set_vector_parameter",
+  "component": "Head",
+  "component_class": "SkeletalMeshComponentBudgeted",
+  "material_slot": 0,
+  "parameter_name": "Base Color",
+  "value": {
+    "r": 0.953,
+    "g": 0.914,
+    "b": 0.863,
+    "a": 1
+  },
+  "apply_to": "both",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Hide face in gameplay only
+------------------------------------------------------------
+
+{
+  "type": "set_hidden_in_game",
+  "component": "Face",
+  "component_class": "MeshComponent",
+  "hidden": true,
+  "propagate_to_children": false,
+  "apply_to": "gameplay",
+  "required": false,
+  "enabled": true
+}
+
+
+------------------------------------------------------------
+Replace equipment slot 0
+------------------------------------------------------------
+
+{
+  "slot": 0,
+  "replace_equipment": "/Game/Characters/Equipment/Batarang/DA_ETA_Batarang.DA_ETA_Batarang",
+  "with_equipment": "/Game/Characters/Equipment/Electrorang/DA_ETA_Electrorang.DA_ETA_Electrorang"
+}
+
+
+============================================================
+23. Testing tips
+============================================================
+
+Test small.
+
+Do not make 30 changes at once and then test. Add a few operations, export, test, then add more.
+
+Good test order:
+
+1. Import playable JSON.
+2. Add one texture change.
+3. Export.
+4. Test in menu.
+5. Test gameplay.
+6. Add colors/materials.
+7. Test again.
+8. Add equipment last.
+
+
+------------------------------------------------------------
+Preview vs gameplay
+------------------------------------------------------------
+
+A suit can work in the menu preview but fail in gameplay if:
+
+- The gameplay pawn uses a different component setup.
+- The operation is set to preview only.
+- The asset is not loaded or packed correctly.
+- Equipment changes are not correct.
+
+A suit can work in gameplay but fail in preview if:
+
+- The preview actor is missing that component.
+- The operation is set to gameplay only.
+- The preview material slot is different.
+- The preview actor is still rebuilding when you test.
+
+
+------------------------------------------------------------
+Required true vs false
+------------------------------------------------------------
+
+Use required true only when the operation is essential.
+
+Good required true examples:
+
+- Main body BC texture
+- Main body material
+- Core suit mesh change
+
+Good required false examples:
+
+- Optional icon
+- Small accessory material
+- Extra cowl tint
+- Test operation
+- Equipment experiment
+
+If you are troubleshooting, set required false until the operation works.
+
+
+============================================================
+24. Troubleshooting
+============================================================
+
+
+------------------------------------------------------------
+The tool rejects my playable JSON
+------------------------------------------------------------
+
+Make sure it is a playable character JSON, not a material, texture, or suit config.
+
+If you imported a suit.json first, make sure the playable JSON matches the suit's source_tag and source_actor_class_contains.
+
+
+------------------------------------------------------------
+The suit does not show in game
+------------------------------------------------------------
+
+Check:
+
+- suit.json is in the correct Suits folder.
+- enabled is true.
+- slot_id is unique.
+- source_tag is valid.
+- source_actor_class_contains is valid.
+- JSON is valid and not broken by a missing comma.
+
+
+------------------------------------------------------------
+The name or description is wrong
+------------------------------------------------------------
+
+Check the Setup page fields and re-export.
+
+Make sure you replaced the old suit.json in the mod folder.
+
+
+------------------------------------------------------------
+The icon does not show
+------------------------------------------------------------
+
+Check:
+
+- icon_asset path
+- uimd_icons paths
+- asset is packed/cooked correctly
+- object name after the dot is included
+
+
+------------------------------------------------------------
+A texture does not change
+------------------------------------------------------------
+
+Check:
+
+- component name
+- material_slot number
+- parameter_name spelling
+- texture asset path
+- apply_to value
+- whether the material actually has that texture parameter
+
+
+------------------------------------------------------------
+A color does not change
+------------------------------------------------------------
+
+Check:
+
+- parameter name spelling
+- Base Color vs Base Colour
+- material slot
+- color values are 0 to 1
+- if you replaced the material, the vector operation comes after set_material
+
+
+------------------------------------------------------------
+A material does not change
+------------------------------------------------------------
+
+Check:
+
+- material asset path
+- material_slot number
+- component name
+- component class
+- apply_to value
+
+
+------------------------------------------------------------
+A part will not hide
+------------------------------------------------------------
+
+Try both operation types:
+
+set_visibility
+set_hidden_in_game
+
+Some components respond better to one than the other.
+
+For gameplay hiding, set_hidden_in_game is usually better.
+
+
+------------------------------------------------------------
+Equipment does not work
+------------------------------------------------------------
+
+Check:
+
+- correct equipment slot
+- replace_equipment path
+- with_equipment path
+- whether the source suit actually uses that equipment
+- whether the replacement equipment works on that character
+
+
+------------------------------------------------------------
+The game crashes or freezes
+------------------------------------------------------------
+
+Remove recent operations and test again.
+
+Start by disabling equipment changes, attach/ensure operations, and mesh changes.
+
+Texture and color operations are usually safer than component creation or equipment replacement.
+
+
+============================================================
+25. Suggested screenshots for a full guide
+============================================================
+
+For a full public guide, useful screenshots would be:
+
+1. The app on the Setup page with nothing imported.
+2. Import Playable JSON button.
+3. Import Suit.JSON button.
+4. Setup page filled out.
+5. UIMD Icons section filled out.
+6. Build Changes page after importing a playable JSON.
+7. Component list with CharacterMesh0 selected.
+8. Selected Part panel showing material slots.
+9. Operation buttons.
+10. Generated Changes table with texture operations.
+11. Generated Changes table with vector/color operations.
+12. Right-click Value copy/paste menu.
+13. Equipment page with a replacement rule.
+14. Export page with the final JSON preview.
+15. The exported suit.json in its mod folder.
+16. The suit showing in the in-game menu.
+17. The suit working in gameplay.
+
+
+============================================================
+26. Quick operation reference
+============================================================
+
+set_texture_parameter
+Changes a texture parameter on a material.
+Needs: component, component_class, material_slot, parameter_name, asset.
+
+set_vector_parameter
+Changes a color/vector parameter on a material.
+Needs: component, component_class, material_slot, parameter_name, value r/g/b/a.
+
+set_scalar_parameter
+Changes a number parameter on a material.
+Needs: component, component_class, material_slot, parameter_name, value.
+
+set_material
+Replaces a material slot.
+Needs: component, component_class, material_slot, asset.
+
+set_static_mesh
+Replaces a static mesh.
+Needs: component, component_class, asset.
+
+set_visibility
+Shows or hides a component using visibility.
+Needs: component, component_class, visible.
+
+set_hidden_in_game
+Shows or hides a component using hidden-in-game state.
+Needs: component, component_class, hidden.
+
+attach_component
+Attaches one component to another.
+Needs: component, component_class, parent, optional socket.
+
+ensure_component
+Advanced operation to make sure a component exists.
+Needs: component, component_class, optional parent/socket/asset/material/materials.
+
+equipment_replacements
+Replaces equipment.
+Needs: slot, replace_equipment, with_equipment.
+
+
+============================================================
+27. Final advice
+============================================================
+
+Most suits should start simple.
+
+A normal custom texture suit may only need:
+
+- Body BC texture
+- Body DNRM texture
+- Body MMR texture
+- Head BC texture
+- Head NRM/DNRM texture
+- Icon asset
+- UIMD icons
+
+More advanced suits may also use:
+
+- Material swaps
+- Vector color changes
+- Scalar material changes
+- Hidden components
+- Equipment replacements
+- Mesh swaps
+
+Do the simple version first, test it, then add advanced changes one at a time.

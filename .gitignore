@@ -1,0 +1,40 @@
+# Build outputs
+bin/
+obj/
+publish/
+artifacts/
+Release/
+Debug/
+*.exe
+*.dll
+*.pdb
+*.zip
+*.nupkg
+*.msix
+
+# Visual Studio / Rider / local IDE state
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local/private config
+.env
+*.local.json
+DiscordPresence.local.json
+src/BatmanSuitJsonBuilder/Data/DiscordPresence.local.json
+
+# Logs/cache/temp
+*.log
+*.cache
+*.tmp
+*.bak
+*.orig
+Thumbs.db
+Desktop.ini
+
+# Do not commit licensed local fonts
+*.ttf
+*.otf
