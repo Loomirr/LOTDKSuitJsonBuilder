@@ -443,7 +443,7 @@ public partial class MainWindow : FluentWindow, INotifyPropertyChanged
             MenuOrder = ParseInt(MenuOrder, 100),
             SlotId = exportSlotId,
             DisplayName = exportDisplayName,
-            Description = Description,
+            Description = NormalizeDescriptionForExport(Description),
             SourceTag = SourceTag,
             SourceActorClassContains = SourceActorClassContains,
             IconAsset = string.IsNullOrWhiteSpace(IconAsset) ? null : IconAsset.Trim(),
@@ -1578,10 +1578,13 @@ public partial class MainWindow : FluentWindow, INotifyPropertyChanged
 
         var value = path.Trim();
 
-        var quoteIndex = value.LastIndexOf('\'');
-        if (quoteIndex >= 0 && quoteIndex + 1 < value.Length)
+        var firstQuoteIndex = value.IndexOf('\'');
+        var lastQuoteIndex = value.LastIndexOf('\'');
+        if (firstQuoteIndex >= 0 && firstQuoteIndex + 1 < value.Length)
         {
-            value = value[(quoteIndex + 1)..];
+            value = lastQuoteIndex > firstQuoteIndex
+                ? value.Substring(firstQuoteIndex + 1, lastQuoteIndex - firstQuoteIndex - 1)
+                : value[(firstQuoteIndex + 1)..];
         }
 
         value = value.Trim('\'', '"');
@@ -1610,6 +1613,11 @@ public partial class MainWindow : FluentWindow, INotifyPropertyChanged
         }
 
         return value;
+    }
+
+    private static string NormalizeDescriptionForExport(string? description)
+    {
+        return (description ?? string.Empty).TrimEnd('\r', '\n');
     }
 
     private static string ExtractParameterName(JsonElement parameterEntry)

@@ -272,6 +272,7 @@ internal sealed class DiscordPresenceOptions
         Enabled = true,
         ApplicationId = string.Empty,
         LargeImageKey = string.Empty,
+        LegacyLargeImageUrl = DefaultLargeImageUrl,
         LargeImageText = DefaultText
     };
 
@@ -286,6 +287,11 @@ internal sealed class DiscordPresenceOptions
         options.LegacyClientId = options.LegacyClientId?.Trim() ?? string.Empty;
         options.LargeImageKey = options.LargeImageKey?.Trim() ?? string.Empty;
         options.LegacyLargeImageUrl = options.LegacyLargeImageUrl?.Trim() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(options.LargeImageKey) && string.IsNullOrWhiteSpace(options.LegacyLargeImageUrl))
+        {
+            options.LegacyLargeImageUrl = DefaultLargeImageUrl;
+        }
+
         options.LargeImageText = string.IsNullOrWhiteSpace(options.LargeImageText)
             ? DefaultText
             : options.LargeImageText.Trim();
@@ -303,5 +309,6 @@ internal sealed class DiscordPresenceOptions
         return !string.IsNullOrWhiteSpace(LargeImageKey) ? LargeImageKey : LegacyLargeImageUrl;
     }
 
+    private const string DefaultLargeImageUrl = "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHlyeHFrMjd0cGYxdXU1aGc2ZjJnZTFheXZ3NWJuam0yaGhyYTc5NyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wD7RLvX3zt0m2jG5xj/giphy.gif";
     private const string DefaultText = "Batman Suit JSON Builder";
 }
